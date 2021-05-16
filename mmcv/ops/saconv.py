@@ -98,8 +98,8 @@ class SAConv2d(ConvAWS2d):
                 bias=True)
 
 
-       # self.node_weight = nn.Parameter(torch.ones(3, dtype=torch.float32), requires_grad=True)
-        #self.node_weight_relu = nn.ReLU()
+        self.node_weight = nn.Parameter(torch.ones(3, dtype=torch.float32), requires_grad=True)
+        self.node_weight_relu = nn.ReLU()
         self.weight_diff.data.zero_()
         constant_init(self.pre_context, 0)
         constant_init(self.post_context, 0)
@@ -157,9 +157,9 @@ def forward(self, x):
             out_m= super().conv2d_forward(x, weight)
         else:
             out_m = super()._conv_forward(x, weight)
-    #w = self.node_weight_relu(self.node_weight(avg_x))
-    #weight = w / (torch.sum(w, dim=0) + 1e-4)
-    out = out_s + out_m+out_l
+    w = self.node_weight_relu(self.node_weight(avg_x))
+    weight = w / (torch.sum(w, dim=0) + 1e-4)
+    out = out_s*weight[0]+ out_m*weight[1]+out_l*weight[2]
     self.padding = ori_p
     self.dilation = ori_d
     # post-context

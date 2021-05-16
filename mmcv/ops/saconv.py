@@ -97,21 +97,18 @@ class SAConv2d(ConvAWS2d):
                 stride=stride,
                 bias=True)
 
-        self.init_weights()
 
         self.node_weight = nn.Parameter(torch.ones(3, dtype=torch.float32), requires_grad=True)
         self.node_weight_relu = nn.ReLU()
+        constant_init(self.switch, 0, bias=1)
+        self.weight_diff.data.zero_()
+        constant_init(self.pre_context, 0)
+        constant_init(self.post_context, 0)
+        if self.use_deform:
+           constant_init(self.offset_s, 0)
+           constant_init(self.offset_l, 0)
+           constant_init(self.offset_m, 0)
 
-
-def init_weights(self):
-    constant_init(self.switch, 0, bias=1)
-    self.weight_diff.data.zero_()
-    constant_init(self.pre_context, 0)
-    constant_init(self.post_context, 0)
-    if self.use_deform:
-        constant_init(self.offset_s, 0)
-        constant_init(self.offset_l, 0)
-        constant_init(self.offset_m, 0)
 
 
 def forward(self, x):

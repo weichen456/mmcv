@@ -145,8 +145,8 @@ def forward(self, x):
         else:
             out_l = super()._conv_forward(x, weight)
 
-    self.padding = tuple(5 * p for p in self.padding)
-    self.dilation = tuple(5 * d for d in self.dilation)
+    self.padding = tuple(5 * p for p in ori_p)
+    self.dilation = tuple(5 * d for d in ori_d)
     weight = weight + self.weight_diff
     if self.use_deform:
         offset = self.offset_m(avg_x)

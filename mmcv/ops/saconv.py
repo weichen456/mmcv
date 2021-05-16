@@ -159,7 +159,7 @@ def forward(self, x):
             out_l = super()._conv_forward(x, weight)
     w = self.node_weight_relu(self.node_weight(avg_x))
     weight = w / (torch.sum(w, dim=0) + 1e-4)
-    out = out_s*weight[0] + out_m*weight[1]+out_l*weight
+    out = out_s*weight[0] + out_m*weight[1]+out_l*weight[2]
     self.padding = ori_p
     self.dilation = ori_d
     # post-context
